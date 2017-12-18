@@ -1,7 +1,8 @@
 # encoding: utf-8
 
 
-module MerkleTree
+class MerkleTree    ## note: use class (!) for now and NOT module
+
 
   MAJOR = 0
   MINOR = 0
