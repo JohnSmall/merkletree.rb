@@ -43,7 +43,6 @@ merkle = MerkleTree.new( [
   '5ee2981606328abfe0c3b1171440f0df746c1e1f8b3b56c351727f7da7ae5d8d' ])
 
 
-puts 'merkle tree root hash:'
 puts merkle.root.value
 # => '25fd59b79d70bbdf043d66a7b0fc01409d11b990e943bb46b840fbbddd5ab895'
 
@@ -95,7 +94,6 @@ merkle_root_value = MerkleTree.compute_root( [
   '5ee2981606328abfe0c3b1171440f0df746c1e1f8b3b56c351727f7da7ae5d8d' ])
 
 
-puts 'merkle tree root hash:'
 puts merkle_root_value
 # => '25fd59b79d70bbdf043d66a7b0fc01409d11b990e943bb46b840fbbddd5ab895'
 ```
@@ -127,7 +125,6 @@ merkle = MerkleTree.for(
   { from: "Anne",            to: "Martijn", what: "Tulip Semper Augustus",     qty: 2 },
   { from: "Ruben",           to: "Julia",   what: "Tulip Admiral van Eijck",   qty: 2 } )
 
-puts 'merkle tree root hash:'
 puts merkle.root.value
 # => '703f44630117ef9b4ac20cb149ed8a0f06e4c3ed2a791e11e16a2fe7a7d0de3d'
 
@@ -139,7 +136,6 @@ merkle_root_value = MerkleTree.compute_root_for(
   { from: "Anne",            to: "Martijn", what: "Tulip Semper Augustus",     qty: 2 },
   { from: "Ruben",           to: "Julia",   what: "Tulip Admiral van Eijck",   qty: 2 } )
 
-puts 'merkle tree root hash:'
 puts merkle_root_value
 # => '703f44630117ef9b4ac20cb149ed8a0f06e4c3ed2a791e11e16a2fe7a7d0de3d'
 ```
