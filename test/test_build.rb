@@ -10,46 +10,149 @@ require 'helper'
 
 class TestBuild < MiniTest::Test
 
-def test_version
-   pp MerkleTree.version
-   pp MerkleTree.banner
-   pp MerkleTree.root
 
-   assert true  ## (for now) everything ok if we get here
-end
+def test_example_4
 
-def test_example_even
+  hashes = [
+    '00',
+    '11',
+    '22',
+    '33',
+  ]
 
-hashes = [
-  "00",
-  "11",
-  "22",
-  "33",
-]
+  hash00   = '00'
+  hash11   = '11'
+  hash0011 = MerkleTree.calc_hash( hash00 + hash11 )
 
-merkle = MerkleTree.new( hashes )
+  hash22   = '22'
+  hash33   = '33'
+  hash2233 = MerkleTree.calc_hash( hash22 + hash33 )
 
-puts "merkletree root hash:"
-puts merkle.root.value
-
-puts "merkletree:"
-pp merkle.root
+  hash00112233 = MerkleTree.calc_hash( hash0011 + hash2233 )
 
 
-  assert true  ## (for now) everything ok if we get here
+  merkle = MerkleTree.new( hashes )
+
+  puts "merkletree root hash:"
+  puts merkle.root.value
+
+  puts "merkletree:"
+  pp merkle.root
+
+  assert_equal hash00, merkle.root.left.left.value
+  assert_equal hash11, merkle.root.left.right.value
+  assert_equal hash22, merkle.root.right.left.value
+  assert_equal hash33, merkle.root.right.right.value
+
+  assert_equal hash0011, merkle.root.left.value
+  assert_equal hash2233, merkle.root.right.value
+
+  assert_equal hash00112233, merkle.root.value
 
 
-######
-#  will print something like:
-#
-# current merkle hash list (2):
-#   ["4ff2b6e318d979927a8c780b5e16cf36dc11ee9f95c5f132279d52f21a051520",
-#    "4d479b4b92c57b9bfcd55f7b674f66f098af8c8de1036b4c419b427c6cd31c83"]
-# current merkle hash list (1):
-#   ["5bffe87c7fd53d98f166661dd6a2d368ba0acc0b5c773d8426f4f153ff23125c"]
-# merkletree hash:
-#     5bffe87c7fd53d98f166661dd6a2d368ba0acc0b5c773d8426f4f153ff23125c
 
-end
+  merkle_root_value = MerkleTree.compute_root( hashes )
+  puts "merkletree root hash:"
+  puts merkle_root_value
 
-end  # class TestBlock
+  assert_equal merkle.root.value, merkle_root_value
+end   # method test_example_4
+
+
+def test_example_3   ## test odd (not even hashes)
+
+  hashes = [
+    '00',
+    '11',
+    '22',
+  ]
+
+  hash00   = '00'
+  hash11   = '11'
+  hash0011 = MerkleTree.calc_hash( hash00 + hash11 )
+
+  hash22   = '22'
+  hash2222 = MerkleTree.calc_hash( hash22 + hash22 )
+
+  hash00112222 = MerkleTree.calc_hash( hash0011 + hash2222 )
+
+
+  merkle = MerkleTree.new( hashes )
+
+  puts "merkletree root hash:"
+  puts merkle.root.value
+
+  puts "merkletree:"
+  pp merkle.root
+
+  assert_equal hash00, merkle.root.left.left.value
+  assert_equal hash11, merkle.root.left.right.value
+  assert_equal hash22, merkle.root.right.left.value
+  assert_equal hash22, merkle.root.right.right.value
+
+  assert_equal hash0011, merkle.root.left.value
+  assert_equal hash2222, merkle.root.right.value
+
+  assert_equal hash00112222, merkle.root.value
+
+
+
+  merkle_root_value = MerkleTree.compute_root( hashes )
+  puts "merkletree root hash:"
+  puts merkle_root_value
+
+  assert_equal merkle.root.value, merkle_root_value
+end   # method test_example_3
+
+
+def test_example_5   ## test odd (not even hashes)
+
+  hashes = [
+    '0000',
+    '0011',
+    '0022',
+    '0033',
+    '0044',
+  ]
+
+  merkle = MerkleTree.new( hashes )
+
+  puts "merkletree root hash:"
+  puts merkle.root.value
+
+  puts "merkletree:"
+  pp merkle.root
+
+
+  merkle_root_value = MerkleTree.compute_root( hashes )
+  puts "merkletree root hash:"
+  puts merkle_root_value
+
+  assert_equal merkle.root.value, merkle_root_value
+end   # method test_example_5
+
+
+def test_tulips
+
+  merkle = MerkleTree.for(
+        { from: "Dutchgrown", to: "Vincent", what: "Tulip Bloemendaal Sunset", qty: 10 },
+        { from: "Keukenhof",  to: "Anne",    what: "Tulip Semper Augustus",    qty: 7  } )
+
+  puts "merkletree root hash:"
+  puts merkle.root.value
+
+  puts "merkletree:"
+  pp merkle.root
+
+  merkle_root_value = MerkleTree.compute_root_for(
+    { from: "Dutchgrown", to: "Vincent", what: "Tulip Bloemendaal Sunset", qty: 10 },
+    { from: "Keukenhof",  to: "Anne",    what: "Tulip Semper Augustus",    qty: 7  } )
+
+  puts "merkletree root hash:"
+  puts merkle_root_value
+
+  assert_equal merkle.root.value, merkle_root_value
+end  # method test_tulips
+
+
+end  # class TestBuild

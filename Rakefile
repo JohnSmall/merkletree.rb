@@ -17,8 +17,8 @@ Hoe.spec 'merkletree' do
   self.readme_file  = 'README.md'
   self.history_file = 'HISTORY.md'
 
-  self.extra_deps = [
-  ]
+  ## self.extra_deps = [
+  ## ]
 
   self.licenses = ['Public Domain']
 
