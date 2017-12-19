@@ -1,6 +1,6 @@
 # Merkle Tree (Ruby Edition)
 
-merkletree library / gem - build your own crypto hash trees; named after Ralph Merkle who patented hash trees in 1979; grow your own money on trees
+merkletree library / gem - build your own crypto hash trees; named after Ralph Merkle who patented hash trees in 1979 (the patent expired in 2002); grow your own money on trees
 
 
 * home  :: [github.com/openblockchains/merkletree.rb](https://github.com/openblockchains/merkletree.rb)
