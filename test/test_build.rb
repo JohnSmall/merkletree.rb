@@ -82,6 +82,9 @@ def test_example_3   ## test odd (not even hashes)
   puts "merkletree root hash:"
   puts merkle.root.value
 
+  ## try handcoded pretty printer (dump)
+  merkle.root.dump
+
   puts "merkletree:"
   pp merkle.root
 
@@ -122,6 +125,9 @@ def test_example_5   ## test odd (not even hashes)
 
   puts "merkletree:"
   pp merkle.root
+
+  ## try handcoded pretty printer (dump)
+  merkle.root.dump
 
 
   merkle_root_value = MerkleTree.compute_root( hashes )

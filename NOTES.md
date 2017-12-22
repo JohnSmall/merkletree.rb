@@ -3,6 +3,7 @@
 ## Todos
 
  - add from array in ctor ??
+ - add parent to node - why? why not? needed for??
 
 
 ## Ruby Libraries / Code
@@ -30,13 +31,12 @@
 
 ## Articles
 
-Understanding Merkle Trees - Why use them, who uses them, and how to use them by Marc Clifton, Mar 2017 
+Understanding Merkle Trees - Why use them, who uses them, and how to use them by Marc Clifton, Mar 2017
 - https://www.codeproject.com/Articles/1176140/Understanding-Merkle-Trees-Why-use-them-who-uses-t
 
- 
+
 More
 
 - https://bitcoin.org/en/glossary/merkle-tree
 - https://bitcoin.org/en/developer-guide#term-merkle-tree
 - https://github.com/bitcoinbook/bitcoinbook/blob/second_edition/ch09.asciidoc
-

@@ -26,6 +26,26 @@ class MerkleTree
        @left  = left
        @right = right
     end
+
+
+    ####
+    ## for debugging / testing add pretty printing (dump tree)
+    def dump() do_dump( 0 ); end
+
+    def do_dump( depth )    ## dump (recursive_worker)
+      depth.times { print ' ' }
+      print "#{depth}:[#{value}] "
+      if @left
+        print '{'
+        puts
+        @left.do_dump( depth+1 )
+        @right.do_dump( depth+1)  if @right    # note: make right node optional (might be nil/empty)
+        depth.times { print ' ' }
+        print '}'
+      end
+      puts
+    end # do_dump
+
   end # class Node
 
 
@@ -100,6 +120,7 @@ class MerkleTree
       level[0]
     end
   end  # method build tree
+
 
 
 
