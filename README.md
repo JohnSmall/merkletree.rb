@@ -141,13 +141,17 @@ puts merkle_root_value
 ```
 
 
-## Install
 
-Just install the gem:
+## Merkle Tree in the Real World
 
-```
-$ gem install merkletree
-```
+- [**blockchain-lite**](https://github.com/openblockchains/blockchain.lite.rb) - build your own blockchain with crypto hashes - revolutionize the world with blockchains, blockchains, blockchains one block at a time
+- You? Add your library / service
+
+
+## References
+
+[**Programming Cryptocurrencies and Blockchains (in Ruby)**](http://yukimotopress.github.io/blockchains) by Gerald Bauer et al, 2018, Yuki & Moto Press
+
 
 
 ## License
