@@ -20,11 +20,13 @@ class MerkleTree
     attr_reader :value
     attr_reader :left
     attr_reader :right
+    attr_accessor :parent
 
-    def initialize( value, left, right )
-       @value = value
-       @left  = left
-       @right = right
+    def initialize( value, left, right, parent=nil )
+      @value = value
+      @left  = left
+      @right = right
+      @parent = parent
     end
 
 
@@ -46,26 +48,38 @@ class MerkleTree
       puts
     end # do_dump
 
+    def sibling_value
+      if parent
+        parent.left == self ? ['r', parent.right.value] : ['l', parent.left.value]
+      end
+    end
+
+    def recurse_to_root
+      if parent
+        [sibling_value] + (parent.recurse_to_root || [])
+      end
+    end
+
   end # class Node
 
 
   ## convenience helpers
   def self.for( *args )
-     if args.size == 1 && args[0].is_a?( Array )
-        transactions = args[0]   ## "unwrap" array in array
-     else
-        transactions = args      ## use "auto-wrapped" splat array
-     end
-     ## for now use to_s for calculation hash
-     hashes = transactions.map { |tx| calc_hash( tx.to_s ) }
-     self.new( hashes )
+    if args.size == 1 && args[0].is_a?( Array )
+      transactions = args[0]   ## "unwrap" array in array
+    else
+      transactions = args      ## use "auto-wrapped" splat array
+    end
+    ## for now use to_s for calculation hash
+    hashes = transactions.map { |tx| calc_hash( tx.to_s ) }
+    self.new( hashes )
   end
 
   def self.compute_root_for( *args )
     if args.size == 1 && args[0].is_a?( Array )
-       transactions = args[0]   ## "unwrap" array in array
+      transactions = args[0]   ## "unwrap" array in array
     else
-       transactions = args      ## use "auto-wrapped" splat array
+      transactions = args      ## use "auto-wrapped" splat array
     end
 
     ## for now use to_s for calculation hash
@@ -80,9 +94,9 @@ class MerkleTree
 
   def initialize( *args )
     if args.size == 1 && args[0].is_a?( Array )
-       hashes = args[0]   ## "unwrap" array in array
+      hashes = args[0]   ## "unwrap" array in array
     else
-       hashes = args      ## use "auto-wrapped" splat array
+      hashes = args      ## use "auto-wrapped" splat array
     end
 
     @hashes = hashes
@@ -110,7 +124,9 @@ class MerkleTree
           ##   todo/check - duplicate just hash? or add right node ref too - why? why not?
           right = left   if right.nil?
 
-          Node.new( MerkleTree.calc_hash( left.value + right.value ), left, right)
+          new_node = Node.new( MerkleTree.calc_hash( left.value + right.value ), left, right)
+          left.parent = right.parent = new_node
+          new_node
         end
         ## debug output
         ## puts "current merkle hash level (#{level.size} nodes):"
@@ -127,9 +143,9 @@ class MerkleTree
   ### shortcut/convenience -  compute root hash w/o building tree nodes
   def self.compute_root( *args )
     if args.size == 1 && args[0].is_a?( Array )
-       hashes = args[0]   ## "unwrap" array in array
+      hashes = args[0]   ## "unwrap" array in array
     else
-       hashes = args      ## use "auto-wrapped" splat array
+      hashes = args      ## use "auto-wrapped" splat array
     end
 
     ## todo/fix: handle hashes.size == 0 case
@@ -146,8 +162,8 @@ class MerkleTree
 
         ## loop through hashes two at a time
         hashes = hashes.each_slice(2).map do |left,right|
-           ## join both hashes slice[0]+slice[1] together
-           hash = calc_hash( left + right )
+          ## join both hashes slice[0]+slice[1] together
+          hash = calc_hash( left + right )
         end
       end
 
@@ -166,6 +182,12 @@ class MerkleTree
     sha.hexdigest
   end
 
+  def self.is_in_tree?(leaf_val, path_to_root, root_value)
+    rt = path_to_root.reduce(leaf_val) do |hash,sibling_value|
+      sibling_value[0] == 'r' ? calc_hash( hash + sibling_value[1]) :  calc_hash( sibling_value[1] + hash)
+    end
+    rt == root_value
+  end
 
 end # class MerkleTree
 
